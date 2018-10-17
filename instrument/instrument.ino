@@ -1,44 +1,54 @@
 #include <MIDI.h>
 MIDI_CREATE_DEFAULT_INSTANCE();
 
+boolean debug = false;
+
+boolean buttonA = false;
+boolean buttonB = false;
+int lastButton = 0; // A:1, B:2
+boolean pushButton = false;
+
+int sounds[] = { 62, 64, 62, 57, 62, 62, 64, 62, 64, 67, 64, 62, 64, 62, 57, 60, 72, 71, 67, 64 };
+int soundsLength = sizeof(sounds) / sizeof(int);
+
+int playSound = -1;
+
 void setup() {
   MIDI.begin(1);
   MIDI.turnThruOff();
   pinMode(2, INPUT); // A
   pinMode(4, INPUT); // B
+  if (debug) Serial.begin(9600);
 }
-
-boolean buttonA = false;
-boolean buttonB = false;
-int lastButton = 0; // A:1, B:2
-boolean switchButton = false;
-
-int sounds = {60, 67, 64, 72, 71, 67, 64, 71, 69, 65, 64, 72, 71, 67, 64, 69, 67, 64, 60, 62, 64, 62, 67, 64, 62, 60, 62, 62, 64, 67, 64, 62, 60, 62, 64};
-int soundsLength = sizeof(sounds);
-int playSound = -1;
 
 void loop() {
   // scan buttons
-  switchButton = false;
+  pushButton = false;
   if (!buttonA && digitalRead(2)) {
     lastButton = 1;
-    switchButton = true;
+    pushButton = true;
   }
   if (!buttonB && digitalRead(4)) {
     lastButton = 2;
-    switchButton = true;
+    pushButton = true;
   }
 
   // play sound
-  if (switchButton) {
+  if (pushButton) {
     MIDI.sendNoteOff(sounds[playSound], 0, 1);
     // next sound
     playSound++;
     if (playSound == soundsLength) playSound = 0;
-    MIDI.sendNoteOn(42, 127, 1);
+    MIDI.sendNoteOn(sounds[playSound], 127, 1);
+  }
+  // stop sound
+  if (!digitalRead(2) && !digitalRead(4)) {
+    MIDI.sendNoteOff(sounds[playSound], 0, 1);
   }
 
   // reset buttons
   buttonA = digitalRead(2);
   buttonB = digitalRead(4);
+
+  delay(50);
 }
