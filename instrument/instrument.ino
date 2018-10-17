@@ -47,6 +47,7 @@ void loop() {
   }
   if (!digitalRead(2) && !digitalRead(4)) {
     MIDI.sendNoteOff(sounds[playSound], 0, 1);
+    acceleration = analogRead(2);
   }
 
   // pitch bend
