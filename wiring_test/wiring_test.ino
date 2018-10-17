@@ -7,5 +7,12 @@ void setup() {
 void loop() {
   Serial.print(digitalRead(2));
   Serial.print(", ");
-  Serial.println(digitalRead(4));
+  Serial.print(digitalRead(4));
+  Serial.print(", ");
+  Serial.print(analogRead(0));
+  Serial.print(", ");
+  Serial.print(analogRead(1));
+  Serial.print(", ");
+  Serial.print(analogRead(2));
+  Serial.print("\n");
 }
