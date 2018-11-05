@@ -17,7 +17,8 @@ int soundsLength = sizeof(sounds) / sizeof(int);
 
 int playSound = -1;
 
-int acceleration = 0;
+int acceleration_base = 0;
+int acceleration_next = 0;
 int bend = 0;
 
 void setup() {
@@ -29,6 +30,7 @@ void setup() {
 }
 
 void loop() {
+  acceleration_next = analogRead(2);
   // scan buttons
   pushButton = false;
   if (!buttonA && digitalRead(2)) {
@@ -48,15 +50,15 @@ void loop() {
     if (playSound == soundsLength) playSound = 0;
     MIDI.sendNoteOn(sounds[playSound], 100, 1);
     // MIDI.sendNoteOn(sounds[playSound], map(analogRead(3), 0, 1023, 0, 127), 1);
-    acceleration = analogRead(2);
+    acceleration_base = acceleration_next;
   }
   if (!digitalRead(2) && !digitalRead(4)) {
     MIDI.sendNoteOff(sounds[playSound], 0, 1);
-    acceleration = analogRead(2);
+    acceleration_base = acceleration_next;
   }
 
   // pitch bend
-  bend = (analogRead(2) - acceleration) * 40;
+  bend = (acceleration_next - acceleration_base) * 40;
   MIDI.sendPitchBend(bend, 1);
 
   // reset buttons
