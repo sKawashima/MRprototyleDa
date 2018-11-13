@@ -65,8 +65,8 @@ void loop() {
       // next sound
       playSound++;
       if (playSound == soundsLength) playSound = 0;
-      MIDI.sendNoteOn(sounds[playSound], 100, 1);
-      // MIDI.sendNoteOn(sounds[playSound], map(analogRead(3), 0, 1023, 0, 127), 1);
+//      MIDI.sendNoteOn(sounds[playSound], 100, 1);
+       MIDI.sendNoteOn(sounds[playSound], map(analogRead(3), 0, 1023, 0, 127), 1);
       acceleration_base = acceleration_next;
     }
     if (!digitalRead(2) && !digitalRead(4)) {
