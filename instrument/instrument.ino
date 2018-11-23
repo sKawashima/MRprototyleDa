@@ -8,13 +8,15 @@ boolean buttonB = false;
 int lastButton = 0; // A:1, B:2
 boolean pushButton = false;
 
-int sounds[] = { 72, 75, 75, 72, 75, 75, 72, 70, 68, 80, 80, 82, 79, 77, 75, 73, 75, 77, 79, 80, 75, 72, 75, 73, 72, 70, 68, 70, 72, 75, 75, 77, 75, 75, 75, 75, 77, 80, 80, 82, 84, 82, 80, 77, 79, 80, 80, 75, 68, 70, 72, 68, 70, 68 };
+int sounds[] = { 53, 52, 53, 55, 53, 55, 57, 58, 59, 60, 57, 55, 53, 53, 62, 60, 53, 50, 58, 57, 55, 53 };
 // 戦場のメリークリスマス
 // 62, 64, 62, 57, 62, 62, 64, 62, 64, 67, 64, 62, 64, 62, 57, 60, 72, 71, 67, 64
 // ようこそジャパリパークへ
 // 53, 52, 53, 55, 53, 55, 57, 58, 59, 60, 57, 55, 53, 53, 62, 60, 53, 50, 58, 57, 55, 53
 // さくら
 // 72, 75, 75, 72, 75, 75, 72, 70, 68, 80, 80, 82, 79, 77, 75, 73, 75, 77, 79, 80, 75, 72, 75, 73, 72, 70, 68, 70, 72, 75, 75, 77, 75, 75, 75, 75, 77, 80, 80, 82, 84, 82, 80, 77, 79, 80, 80, 75, 68, 70, 72, 68, 70, 68
+// 蛍の光
+// 60, 65, 65, 65, 69, 67, 65, 67, 69, 65, 65, 69, 72, 74, 74, 72, 69, 69, 65, 67, 65, 67, 69, 65, 62, 62, 60, 65
 int soundsLength = sizeof(sounds) / sizeof(int);
 
 int playSound = -1;
@@ -65,8 +67,8 @@ void loop() {
       // next sound
       playSound++;
       if (playSound == soundsLength) playSound = 0;
-      MIDI.sendNoteOn(sounds[playSound], 100, 1);
-      // MIDI.sendNoteOn(sounds[playSound], map(analogRead(3), 0, 1023, 0, 127), 1);
+//      MIDI.sendNoteOn(sounds[playSound], 100, 1);
+       MIDI.sendNoteOn(sounds[playSound], map(analogRead(3), 0, 1023, 0, 127), 1);
       acceleration_base = acceleration_next;
     }
     if (!digitalRead(2) && !digitalRead(4)) {
@@ -113,4 +115,3 @@ void initAcceleration_fillter () {
   }
   acceleration_fillterCount = 0;
 }
-
